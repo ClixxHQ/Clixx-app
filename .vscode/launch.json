@@ -4,25 +4,21 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": "clixx",
-            "cwd": "clixx",
+            "name": "Clixx-app",
             "request": "launch",
             "type": "dart",
             "args": ["--verbose"]
         },
         {
-            "name": "clixx (profile mode)",
-            "cwd": "clixx",
+            "name": "Clixx-app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
             "args": ["--verbose"]
         },
         {
-            "name": "clixx (release mode)",
-            "cwd": "clixx",
+            "name": "Clixx-app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
