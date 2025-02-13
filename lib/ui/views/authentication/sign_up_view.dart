@@ -7,6 +7,7 @@ import 'package:clixx/shared/app_spacing.dart';
 import 'package:clixx/shared/widgets/app_button.dart';
 import 'package:clixx/shared/widgets/app_input.dart';
 import 'package:clixx/shared/widgets/app_phone_input.dart';
+import 'package:clixx/shared/app_icons.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -64,9 +65,13 @@ class _SignUpViewState extends State<SignUpView> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(16.h),
+          child: Container(),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Form(
           key: _formKey,
           child: Column(
@@ -80,7 +85,7 @@ class _SignUpViewState extends State<SignUpView> {
                   height: 1.5,
                 ),
               ),
-              AppSpacing.v32(),
+              AppSpacing.v24(),
               AppPhoneInput(
                 controller: _phoneController,
                 labelText: 'Phone number',
@@ -160,7 +165,11 @@ class _SignUpViewState extends State<SignUpView> {
                         ),
                       ),
                       const Spacer(),
-                      Icon(Icons.calendar_today_outlined, size: 20.w),
+                      AppIcons(
+                        icon: AppIconData.calendar,
+                        size: 20.w,
+                        color: AppColors.primary,
+                      ),
                     ],
                   ),
                 ),
@@ -179,7 +188,7 @@ class _SignUpViewState extends State<SignUpView> {
                   Padding(
                     padding: EdgeInsets.only(top: 2.h),
                     child: Transform.scale(
-                      scale: 1.2,
+                      scale: 1.0,
                       child: SizedBox(
                         height: 24.h,
                         width: 24.w,
@@ -245,6 +254,7 @@ class _SignUpViewState extends State<SignUpView> {
                 } : null,
                 backgroundColor: _termsAccepted ? AppColors.primary : AppColors.primitiveBlue,
               ),
+              AppSpacing.v32(),
             ],
           ),
         ),
