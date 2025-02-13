@@ -176,22 +176,29 @@ class _SignUpViewState extends State<SignUpView> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Transform.translate(
-                    offset: Offset(0, -4.h),
-                    child: SizedBox(
-                      height: 24.h,
-                      width: 24.w,
-                      child: Checkbox(
-                        value: _termsAccepted,
-                        onChanged: (value) {
-                          setState(() {
-                            _termsAccepted = value ?? false;
-                          });
-                        },
-                        shape: const CircleBorder(),
-                        side: BorderSide(width: 1.w),
-                        activeColor: Colors.green,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.h),
+                    child: Transform.scale(
+                      scale: 1.2,
+                      child: SizedBox(
+                        height: 24.h,
+                        width: 24.w,
+                        child: Checkbox(
+                          value: _termsAccepted,
+                          onChanged: (value) {
+                            setState(() {
+                              _termsAccepted = value ?? false;
+                            });
+                          },
+                          shape: const CircleBorder(),
+                          side: BorderSide(width: 1.w),
+                          activeColor: Colors.green,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: const VisualDensity(
+                            horizontal: VisualDensity.minimumDensity,
+                            vertical: VisualDensity.minimumDensity,
+                          ),
+                        ),
                       ),
                     ),
                   ),
