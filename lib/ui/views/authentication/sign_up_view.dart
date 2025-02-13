@@ -1,3 +1,4 @@
+import 'package:clixx/utils/form_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,12 +91,7 @@ class _SignUpViewState extends State<SignUpView> {
                 controller: _phoneController,
                 labelText: 'Phone number',
                 isRequired: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a valid phone number';
-                  }
-                  return null;
-                },
+                validator: FormValidators.validatePhoneNumber,
                 onChanged: (value) {
                   setState(() {
                     _phoneNumber = value;
@@ -109,6 +105,7 @@ class _SignUpViewState extends State<SignUpView> {
                 hintText: 'example@email.com',
                 isRequired: true,
                 keyboardType: TextInputType.emailAddress,
+                validator: FormValidators.validateEmail,
               ),
               AppSpacing.v24(),
               Row(
