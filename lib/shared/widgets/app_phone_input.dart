@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:clixx/shared/app_colors.dart';
+import 'package:clixx/shared/widgets/app_bottom_sheet.dart';
 
 class AppPhoneInput extends StatefulWidget {
   final TextEditingController? controller;
@@ -46,50 +47,27 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
     );
   }
 
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
+
   void _showCountryPicker() {
-    showCountryPicker(
-      context: context,
-      showPhoneCode: true,
-      useSafeArea: true,
-      countryListTheme: CountryListThemeData(
-        backgroundColor: Colors.white,
-        bottomSheetHeight: MediaQuery.of(context).size.height * 0.6,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-        padding: EdgeInsets.only(
-          left: 24.w,
-          right: 24.w,
-          bottom: 24.h,
-        ),
-        searchTextStyle: TextStyle(
-          fontSize: 14.sp,
-          color: Colors.black87,
-        ),
-        textStyle: TextStyle(
-          fontSize: 14.sp,
-          color: Colors.black87,
-        ),
-        flagSize: 24.w,
-        inputDecoration: InputDecoration(
-          hintText: 'Search country',
-          prefixIcon: Icon(Icons.search, size: 20.w, color: Colors.black54),
-          filled: true,
-          fillColor: AppColors.grey100,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          hintStyle: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.black54,
-          ),
-        ),
+    AppBottomSheet.showBottomSheet(
+      isScrollControlled: true,
+      height: MediaQuery.of(context).size.height * 0.6,
+      showDragIndicator: true,
+      child: CountryListView(
+        onSelect: (Country country) {
+          setState(() {
+            selectedCountry = country;
+          });
+          Navigator.pop(context);
+        },
       ),
-      onSelect: (Country country) {
-        setState(() {
-          selectedCountry = country;
-        });
-      },
     );
   }
 
@@ -98,103 +76,237 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.labelText != null) ...[
-          Row(
-            children: [
-              Text(
-                widget.labelText!,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.black87,
-                ),
-              ),
-              if (widget.isRequired)
-                Text(
-                  ' *',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.red,
-                  ),
-                ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-        ],
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Country selector
-            InkWell(
-              onTap: _showCountryPicker,
-              child: Container(
-                height: 56.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                decoration: BoxDecoration(
-                  color: AppColors.grey100,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      selectedCountry?.flagEmoji ?? '🇳🇬',
-                      style: TextStyle(fontSize: 24.sp),
+            // Country label
+            Padding(
+              padding: EdgeInsets.only(right: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Country',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.black87,
                     ),
-                    SizedBox(width: 8.w),
-                    Icon(Icons.keyboard_arrow_down, size: 20.w),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 8.h),
+                  // Country selector
+                  InkWell(
+                    onTap: _showCountryPicker,
+                    child: Container(
+                      height: 56.h,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.grey100,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            selectedCountry?.flagEmoji ?? '🇳🇬',
+                            style: TextStyle(fontSize: 24.sp),
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(Icons.keyboard_arrow_down, size: 20.w),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(width: 8.w),
-            // Phone number input
+            // Phone number section
             Expanded(
-              child: Container(
-                height: 56.h,
-                decoration: BoxDecoration(
-                  color: AppColors.grey100,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(width: 16.w),
-                    Text(
-                      '+${selectedCountry?.phoneCode ?? '234'}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _controller,
-                        keyboardType: TextInputType.phone,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Phone number',
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: 16.sp,
                           color: Colors.black87,
                         ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: selectedCountry?.example ?? '8012345678',
-                          hintStyle: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.black54,
+                      ),
+                      if (widget.isRequired)
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.red,
                           ),
                         ),
-                        validator: widget.validator,
-                        onChanged: (value) {
-                          if (widget.onChanged != null) {
-                            // Include country code in the callback
-                            widget.onChanged!('${selectedCountry?.phoneCode ?? '234'}$value');
-                          }
-                        },
-                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Container(
+                    height: 56.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.grey100,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ],
-                ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 16.w),
+                        Text(
+                          '+${selectedCountry?.phoneCode ?? '234'}',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _controller,
+                            keyboardType: TextInputType.phone,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.black87,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: selectedCountry?.example ?? '8012345678',
+                              hintStyle: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            validator: widget.validator,
+                            onChanged: (value) {
+                              if (widget.onChanged != null) {
+                                widget.onChanged!('${selectedCountry?.phoneCode ?? '234'}$value');
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class CountryListView extends StatefulWidget {
+  final Function(Country) onSelect;
+
+  const CountryListView({
+    Key? key,
+    required this.onSelect,
+  }) : super(key: key);
+
+  @override
+  State<CountryListView> createState() => _CountryListViewState();
+}
+
+class _CountryListViewState extends State<CountryListView> {
+  late TextEditingController _searchController;
+  List<Country> _filteredCountries = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _filteredCountries = CountryService().getAll();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterCountries(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredCountries = CountryService().getAll();
+      });
+      return;
+    }
+
+    setState(() {
+      _filteredCountries = CountryService().getAll()
+          .where((country) =>
+              country.name.toLowerCase().contains(query.toLowerCase()) ||
+              country.phoneCode.contains(query) ||
+              country.countryCode.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Container(
+            height: 48.h,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              color: AppColors.grey100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.search, size: 20.w, color: Colors.black54),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search country',
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      hintStyle: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black87,
+                    ),
+                    onChanged: _filterCountries,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 16.h),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: _filteredCountries.map((country) => ListTile(
+                leading: Text(
+                  country.flagEmoji,
+                  style: TextStyle(fontSize: 24.sp),
+                ),
+                title: Text(
+                  '+${country.phoneCode} ${country.name}',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.black87,
+                  ),
+                ),
+                onTap: () => widget.onSelect(country),
+              )).toList(),
+            ),
+          ),
         ),
       ],
     );
