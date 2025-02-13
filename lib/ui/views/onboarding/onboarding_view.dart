@@ -96,7 +96,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                     onPressed: () {
                       // Navigate to login
                     },
-                    backgroundColor: AppColors.primitiveBlue,
+                    backgroundColor: AppColors.primitiveBlue50,
                     textColor: Colors.black87,
                     elevation: 0,
                     textStyle: TextStyle(
