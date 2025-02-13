@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clixx/app/routes/app_routes.dart';
+import 'package:clixx/services/navigation_service.dart';
 
 class SplashScreenView extends StatefulWidget {
   const SplashScreenView({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   _navigateToOnboarding() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {
-      Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+      NavigationService.pushReplacementNamed(AppRoutes.onboarding);
     }
   }
 
@@ -29,11 +31,11 @@ class _SplashScreenViewState extends State<SplashScreenView> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
               'Clixx',
               style: TextStyle(
-                fontSize: 32,
+                fontSize: 32.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
