@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:clixx/ui/views/onboarding/splash_screen_view.dart';
-import 'package:clixx/ui/views/onboarding/onboarding_view.dart';
-import 'package:clixx/ui/views/authentication/sign_up_view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clixx/app/routes/app_routes.dart';
 import 'package:clixx/app/themes.dart';
+import 'package:clixx/services/navigation_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,15 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Clixx',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.splash,
-      routes: {
-        AppRoutes.splash: (context) => const SplashScreenView(),
-        AppRoutes.onboarding: (context) => const OnboardingView(),
-        AppRoutes.signUp: (context) => const SignUpView(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'Clixx',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          navigatorKey: NavigationService.navigatorKey,
+          initialRoute: AppRoutes.initialRoute,
+          routes: AppRoutes.routes,
+        );
       },
     );
   }
