@@ -9,6 +9,9 @@ import 'package:clixx/shared/widgets/app_button.dart';
 import 'package:clixx/shared/widgets/app_input.dart';
 import 'package:clixx/shared/widgets/app_phone_input.dart';
 import 'package:clixx/shared/app_icons.dart';
+import 'package:clixx/services/navigation_service.dart';
+import 'package:clixx/app/routes/app_routes.dart';
+import 'package:clixx/shared/widgets/app_back_button.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -57,6 +60,7 @@ class _SignUpViewState extends State<SignUpView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: const AppBackButton(isBorder: false),
         centerTitle: true,
         title: Text(
           'Create your account',
@@ -246,10 +250,20 @@ class _SignUpViewState extends State<SignUpView> {
                 text: 'Continue',
                 onPressed: _termsAccepted ? () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    // Handle sign up
+                    NavigationService.pushNamed(
+                      AppRoutes.otpVerification,
+                      arguments: {
+                        'phoneNumber': _phoneNumber,
+                        'email': _emailController.text,
+                        'firstName': _firstNameController.text,
+                        'lastName': _lastNameController.text,
+                        'birthday': _selectedDate,
+                        'referralCode': _referralController.text,
+                      },
+                    );
                   }
                 } : null,
-                backgroundColor: _termsAccepted ? AppColors.primary : AppColors.primitiveBlue,
+                backgroundColor: _termsAccepted ? AppColors.primary : AppColors.primitiveBlue50,
               ),
               AppSpacing.v32(),
             ],
