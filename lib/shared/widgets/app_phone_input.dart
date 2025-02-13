@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:clixx/shared/app_colors.dart';
+import 'package:clixx/shared/app_spacing.dart';
 import 'package:clixx/shared/widgets/app_bottom_sheet.dart';
+import 'package:clixx/utils/form_validator.dart';
 
 class AppPhoneInput extends StatefulWidget {
   final TextEditingController? controller;
@@ -27,6 +29,7 @@ class AppPhoneInput extends StatefulWidget {
 class _AppPhoneInputState extends State<AppPhoneInput> {
   late TextEditingController _controller;
   Country? selectedCountry;
+  String? errorText;
 
   @override
   void initState() {
@@ -187,11 +190,25 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                               ),
                               isDense: true,
                               contentPadding: EdgeInsets.only(right: 16.w),
+                              errorStyle: const TextStyle(height: 0, fontSize: 0),
                             ),
-                            validator: widget.validator,
+                            validator: (value) {
+                              final error = widget.validator?.call(value) ?? 
+                                  FormValidators.validatePhoneNumber(value);
+                              setState(() {
+                                errorText = error;
+                              });
+                              return error;
+                            },
                             onChanged: (value) {
                               if (widget.onChanged != null) {
                                 widget.onChanged!('${selectedCountry?.phoneCode ?? '234'}$value');
+                              }
+                              // Clear error when user types
+                              if (errorText != null) {
+                                setState(() {
+                                  errorText = null;
+                                });
                               }
                             },
                           ),
@@ -199,6 +216,35 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                       ],
                     ),
                   ),
+                  if (errorText != null) ...[
+                    AppSpacing.v8(),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFEBEB),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.red,
+                            size: 16.w,
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            child: Text(
+                              errorText!,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
