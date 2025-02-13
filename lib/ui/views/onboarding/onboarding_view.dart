@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clixx/app/routes/app_routes.dart';
+import 'package:clixx/services/navigation_service.dart';
+import 'package:clixx/shared/app_colors.dart';
+import 'package:clixx/shared/app_spacing.dart';
+import 'package:clixx/shared/widgets/app_button.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
@@ -40,22 +45,20 @@ class _OnboardingViewState extends State<OnboardingView> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _pages.length,
-                  (index) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: 48,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: _currentPage == index
-                          ? const Color(0xFF208BFE)
-                          : const Color(0xFF208BFE).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
+            AppSpacing.v16(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                _pages.length,
+                (index) => Container(
+                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                  width: 48.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: _currentPage == index
+                        ? AppColors.primary
+                        : AppColors.primary.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
               ),
@@ -75,44 +78,31 @@ class _OnboardingViewState extends State<OnboardingView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.w),
               child: Column(
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.signUp);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF208BFE),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: const Text('Sign Up'),
+                  AppButton(
+                    text: 'Sign Up',
+                    onPressed: () => NavigationService.pushNamed(AppRoutes.signUp),
+                    textStyle: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigate to login
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE9F3FF),
-                        foregroundColor: Colors.black87,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: const Text('Login'),
+                  AppSpacing.v12(),
+                  AppButton(
+                    text: 'Login',
+                    onPressed: () {
+                      // Navigate to login
+                    },
+                    backgroundColor: AppColors.primitiveBlue,
+                    textColor: Colors.black87,
+                    elevation: 0,
+                    textStyle: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                     ),
                   ),
                 ],
@@ -138,33 +128,33 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         children: [
-          const SizedBox(height: 64), // Push content up
+          AppSpacing.v64(),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 28,
+            style: TextStyle(
+              fontSize: 28.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          AppSpacing.v16(),
           SizedBox(
-            width: 380,
+            width: 380.w,
             child: Text(
               description,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: 16.sp,
                 color: Colors.black87,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          const Spacer(), // This will push the content up and leave space for illustrations
+          const Spacer(),
         ],
       ),
     );
