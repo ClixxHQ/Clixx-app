@@ -177,6 +177,12 @@ class _AppInputState extends State<AppInput> {
               }
               widget.onChanged?.call(val);
               _calculateLineOnChanged(val, context);
+              // Clear error when user types
+              if (errorText != null) {
+                setState(() {
+                  errorText = null;
+                });
+              }
             },
             style: TextStyle(
               fontSize: 14.sp,
@@ -229,11 +235,30 @@ class _AppInputState extends State<AppInput> {
         ),
         if (errorText != null) AppSpacing.v8(),
         if (errorText != null)
-          Text(
-            errorText!,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.red,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFEBEB),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Colors.red,
+                  size: 16.w,
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Text(
+                    errorText!,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
       ],
