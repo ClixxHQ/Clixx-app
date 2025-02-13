@@ -19,16 +19,11 @@ class AppBottomSheet {
         context: context,
         isDismissible: isDismissible,
         enableDrag: enableDrag,
-        isScrollControlled: isScrollControlled,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        constraints: height != null
-            ? BoxConstraints(
-                maxHeight: height,
-                minHeight: height,
-              )
-            : null,
         builder: (context) {
           return Container(
+            height: height ?? MediaQuery.of(context).size.height * 0.6,
             decoration: BoxDecoration(
               color: backgroundColor ?? Colors.white,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -37,22 +32,25 @@ class AppBottomSheet {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (showDragIndicator) ...[
-                  SizedBox(height: 8.h),
+                  SizedBox(height: 16.h),
                   Container(
-                    width: 40.w,
-                    height: 4.h,
+                    width: 64.w,
+                    height: 5.47.h,
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(2.r),
+                      borderRadius: BorderRadius.circular(109.41.r),
                     ),
                   ),
                   SizedBox(height: 16.h),
                 ],
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onVerticalDragUpdate: (details) {
+                      if (enableDrag) {
+                        Navigator.of(context).pop();
+                      }
+                    },
                     child: child,
                   ),
                 ),
