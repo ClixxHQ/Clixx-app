@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:clixx/shared/app_colors.dart';
 import 'package:clixx/shared/app_spacing.dart';
 import 'package:clixx/services/navigation_service.dart';
+import 'package:clixx/shared/widgets/app_bottom_sheet.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
   final DateTime? selectedDate;
@@ -20,11 +21,11 @@ class CalendarBottomSheet extends StatefulWidget {
     required DateTime? selectedDate,
     required Function(DateTime) onDateSelected,
   }) {
-    showModalBottomSheet(
-      context: NavigationService.context,
+    AppBottomSheet.showBottomSheet(
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CalendarBottomSheet(
+      showDragIndicator: true,
+      height: MediaQuery.of(NavigationService.context).size.height * 0.7,
+      child: CalendarBottomSheet(
         selectedDate: selectedDate,
         onDateSelected: onDateSelected,
       ),
@@ -90,16 +91,12 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
@@ -144,8 +141,10 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               ),
             ],
           ),
-          AppSpacing.v16(),
-          Expanded(
+        ),
+        AppSpacing.v16(),
+        Expanded(
+          child: SingleChildScrollView(
             child: _showYearPicker
                 ? _buildYearPicker()
                 : CalendarDatePicker2(
@@ -182,8 +181,8 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                     },
                   ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
