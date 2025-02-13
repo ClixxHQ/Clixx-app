@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:intl/intl.dart';
+import 'package:clixx/shared/app_colors.dart';
+import 'package:clixx/shared/app_spacing.dart';
+import 'package:clixx/services/navigation_service.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
   final DateTime? selectedDate;
@@ -12,20 +16,33 @@ class CalendarBottomSheet extends StatefulWidget {
     required this.onDateSelected,
   }) : super(key: key);
 
+  static void show({
+    required DateTime? selectedDate,
+    required Function(DateTime) onDateSelected,
+  }) {
+    showModalBottomSheet(
+      context: NavigationService.context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CalendarBottomSheet(
+        selectedDate: selectedDate,
+        onDateSelected: onDateSelected,
+      ),
+    );
+  }
+
   @override
   State<CalendarBottomSheet> createState() => _CalendarBottomSheetState();
 }
 
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   late DateTime _focusedDate;
-  DateTime? _selectedDate;
   bool _showYearPicker = false;
 
   @override
   void initState() {
     super.initState();
     _focusedDate = widget.selectedDate ?? DateTime.now();
-    _selectedDate = widget.selectedDate;
   }
 
   void _handleYearSelection(int year) {
@@ -39,7 +56,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     final currentYear = DateTime.now().year;
     final years = List.generate(100, (index) => currentYear - 50 + index);
 
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.3,
       child: ListView.builder(
         itemCount: years.length,
@@ -50,17 +67,17 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
           return InkWell(
             onTap: () => _handleYearSelection(year),
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12.h),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF208BFE) : Colors.transparent,
+                color: isSelected ? AppColors.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 year.toString(),
                 style: TextStyle(
                   color: isSelected ? Colors.white : Colors.black87,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
@@ -75,7 +92,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -106,8 +123,8 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                 },
                 child: Text(
                   '${_focusedDate.year} ${_getMonthName(_focusedDate.month)}',
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: TextStyle(
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -127,41 +144,38 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          AppSpacing.v16(),
           Expanded(
             child: _showYearPicker
                 ? _buildYearPicker()
                 : CalendarDatePicker2(
                     config: CalendarDatePicker2Config(
                       calendarType: CalendarDatePicker2Type.single,
-                      selectedDayHighlightColor: const Color(0xFF208BFE),
+                      selectedDayHighlightColor: AppColors.primary,
                       weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                      weekdayLabelTextStyle: const TextStyle(
+                      weekdayLabelTextStyle: TextStyle(
                         color: Colors.black87,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
-                      controlsTextStyle: const TextStyle(
+                      controlsTextStyle: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                       ),
-                      dayTextStyle: const TextStyle(
+                      dayTextStyle: TextStyle(
                         color: Colors.black,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
-                      selectedDayTextStyle: const TextStyle(
+                      selectedDayTextStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                       ),
                       currentDate: _focusedDate,
                     ),
-                    value: _selectedDate != null ? [_selectedDate!] : [],
+                    value: widget.selectedDate != null ? [widget.selectedDate!] : [],
                     onValueChanged: (dates) {
                       if (dates.isNotEmpty) {
-                        setState(() {
-                          _selectedDate = dates.first;
-                        });
                         widget.onDateSelected(dates.first!);
                         Navigator.pop(context);
                       }
