@@ -185,6 +185,8 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                                 fontSize: 14.sp,
                                 color: Colors.black54,
                               ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.only(right: 16.w),
                             ),
                             validator: widget.validator,
                             onChanged: (value) {
