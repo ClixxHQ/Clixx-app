@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:country_picker/country_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clixx/ui/widgets/calendar_bottom_sheet.dart';
+import 'package:clixx/shared/app_colors.dart';
+import 'package:clixx/shared/app_spacing.dart';
+import 'package:clixx/shared/widgets/app_button.dart';
+import 'package:clixx/shared/widgets/app_input.dart';
+import 'package:clixx/shared/widgets/app_phone_input.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -13,35 +17,34 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
-  String _searchQuery = '';
-  PhoneNumber? _phoneNumber;
-  DateTime? _selectedDate;
-  bool _termsAccepted = false;
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _referralController = TextEditingController();
+  DateTime? _selectedDate;
+  bool _termsAccepted = false;
+  String? _phoneNumber;
+  String? _countryCode;
 
   @override
-  void initState() {
-    super.initState();
-    _phoneNumber = PhoneNumber(isoCode: 'NG');
+  void dispose() {
+    _phoneController.dispose();
+    _emailController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _referralController.dispose();
+    super.dispose();
   }
 
   void _showCalendarPicker() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CalendarBottomSheet(
-        selectedDate: _selectedDate,
-        onDateSelected: (date) {
-          setState(() {
-            _selectedDate = date;
-          });
-        },
-      ),
+    CalendarBottomSheet.show(
+      selectedDate: _selectedDate,
+      onDateSelected: (date) {
+        setState(() {
+          _selectedDate = date;
+        });
+      },
     );
   }
 
@@ -52,166 +55,71 @@ class _SignUpViewState extends State<SignUpView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Create an account',
+        centerTitle: true,
+        title: Text(
+          'Create your account',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: 28.sp,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Create your account',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
+              Text(
                 'It will only take a minute to create you account.\nPlease enter your details to get started',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Colors.black87,
+                  height: 1.5,
                 ),
               ),
-              const SizedBox(height: 32),
-              const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Country',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Phone number',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Text(
-                          '*',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              AppSpacing.v32(),
+              AppPhoneInput(
+                controller: _phoneController,
+                labelText: 'Phone number',
+                isRequired: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a valid phone number';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _phoneNumber = value;
+                  });
+                },
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF3F4F6),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        // This will trigger the country picker
-                        showCountryPicker(
-                          context: context,
-                          showPhoneCode: true,
-                          onSelect: (country) {
-                            setState(() {
-                              _phoneNumber = PhoneNumber(
-                                isoCode: country.countryCode,
-                                phoneNumber: _phoneController.text,
-                              );
-                            });
-                          },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 32,
-                              height: 32,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _phoneNumber?.isoCode == 'NG' ? '🇳🇬' : '🇳🇬',
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Icon(Icons.keyboard_arrow_down),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        hintText: '800 000 0000',
-                        prefixText: '+234 ',
-                        filled: true,
-                        fillColor: const Color(0xFFF3F4F6),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              _buildTextField(
-                label: 'Email address',
+              AppSpacing.v24(),
+              AppInput(
+                labelText: 'Email address',
                 controller: _emailController,
                 hintText: 'example@email.com',
                 isRequired: true,
+                keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 24),
+              AppSpacing.v24(),
               Row(
                 children: [
                   Expanded(
-                    child: _buildTextField(
-                      label: 'First name',
+                    child: AppInput(
+                      labelText: 'First name',
                       controller: _firstNameController,
                       hintText: 'e.g Sam',
                       isRequired: true,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  AppSpacing.h16(),
                   Expanded(
-                    child: _buildTextField(
-                      label: 'Last name',
+                    child: AppInput(
+                      labelText: 'Last name',
                       controller: _lastNameController,
                       hintText: 'e.g Smith',
                       isRequired: true,
@@ -219,193 +127,121 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              Column(
+              AppSpacing.v24(),
+              Text(
+                'Birthday',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.black87,
+                ),
+              ),
+              AppSpacing.v8(),
+              InkWell(
+                onTap: _showCalendarPicker,
+                child: Container(
+                  height: 56.h,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.grey100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        _selectedDate != null
+                            ? DateFormat('MMMM d yyyy').format(_selectedDate!)
+                            : 'Select birth month and day',
+                        style: TextStyle(
+                          color: _selectedDate != null
+                              ? Colors.black87
+                              : Colors.black54,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(Icons.calendar_today_outlined, size: 20.w),
+                    ],
+                  ),
+                ),
+              ),
+              AppSpacing.v24(),
+              AppInput(
+                labelText: 'Referral code',
+                controller: _referralController,
+                hintText: 'Enter a referral code',
+                isRequired: false,
+              ),
+              AppSpacing.v24(),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Birthday',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
+                  Transform.translate(
+                    offset: Offset(0, -4.h),
+                    child: SizedBox(
+                      height: 24.h,
+                      width: 24.w,
+                      child: Checkbox(
+                        value: _termsAccepted,
+                        onChanged: (value) {
+                          setState(() {
+                            _termsAccepted = value ?? false;
+                          });
+                        },
+                        shape: const CircleBorder(),
+                        side: BorderSide(width: 1.w),
+                        activeColor: Colors.green,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: _showCalendarPicker,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF3F4F6),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            _selectedDate != null
-                                ? DateFormat('MMMM d yyyy').format(_selectedDate!)
-                                : 'Select birth month and day',
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.black87,
+                          height: 1.5,
+                        ),
+                        children: const [
+                          TextSpan(
+                            text: 'I confirm that I have read, consented and agree to Clixx ',
+                          ),
+                          TextSpan(
+                            text: 'Terms of Use',
                             style: TextStyle(
-                              color: _selectedDate != null
-                                  ? Colors.black87
-                                  : Colors.black54,
+                              color: AppColors.primary,
                             ),
                           ),
-                          const Spacer(),
-                          const Icon(Icons.calendar_today_outlined, size: 20),
+                          TextSpan(text: ' and '),
+                          TextSpan(
+                            text: 'Privacy Policy',
+                            style: TextStyle(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                          TextSpan(text: '.'),
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              _buildTextField(
-                label: 'Referral code',
-                controller: _referralController,
-                hintText: 'Enter a referral code',
-                isRequired: false,
-              ),
-              const SizedBox(height: 24),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Transform.scale(
-                    scale: 1.2,
-                    child: Checkbox(
-                      value: _termsAccepted,
-                      onChanged: (value) {
-                        setState(() {
-                          _termsAccepted = value ?? false;
-                        });
-                      },
-                      shape: const CircleBorder(),
-                      side: const BorderSide(width: 1.5),
-                      activeColor: const Color(0xFF208BFE),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: RichText(
-                        text: const TextSpan(
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'I confirm that I have read, consented and agree to Clixx ',
-                            ),
-                            TextSpan(
-                              text: 'Terms of Use',
-                              style: TextStyle(
-                                color: Color(0xFF208BFE),
-                              ),
-                            ),
-                            TextSpan(text: ' and '),
-                            TextSpan(
-                              text: 'Privacy Policy',
-                              style: TextStyle(
-                                color: Color(0xFF208BFE),
-                              ),
-                            ),
-                            TextSpan(text: '.'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _termsAccepted ? () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Handle sign up
-                    }
-                  } : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF208BFE),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    disabledBackgroundColor: const Color(0xFF208BFE).withOpacity(0.5),
-                  ),
-                  child: const Text('Continue'),
-                ),
+              AppSpacing.v24(),
+              AppButton(
+                text: 'Continue',
+                onPressed: _termsAccepted ? () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    // Handle sign up
+                  }
+                } : null,
+                backgroundColor: _termsAccepted ? AppColors.primary : AppColors.primitiveBlue,
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    required String hintText,
-    required bool isRequired,
-    TextInputType? keyboardType,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
-            if (isRequired) ...[
-              const SizedBox(width: 4),
-              const Text(
-                '*',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ],
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hintText,
-            filled: true,
-            fillColor: const Color(0xFFF3F4F6),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none,
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-          ),
-          validator: isRequired
-              ? (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'This field is required';
-                  }
-                  return null;
-                }
-              : null,
-        ),
-      ],
     );
   }
 }
