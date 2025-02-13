@@ -106,9 +106,18 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            selectedCountry?.flagEmoji ?? '🇳🇬',
-                            style: TextStyle(fontSize: 24.sp),
+                          Container(
+                            width: 32.w,
+                            height: 32.w,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.transparent,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              selectedCountry?.flagEmoji ?? '🇳🇬',
+                              style: TextStyle(fontSize: 24.sp),
+                            ),
                           ),
                           SizedBox(width: 8.w),
                           Icon(Icons.keyboard_arrow_down, size: 20.w),
