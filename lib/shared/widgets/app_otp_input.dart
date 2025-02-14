@@ -60,7 +60,7 @@ class AppOtpInput extends StatelessWidget {
         contentPadding: EdgeInsets.zero,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.black87,
+            color: Colors.black,
             width: 4.w,
           ),
         ),
