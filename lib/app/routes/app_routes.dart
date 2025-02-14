@@ -9,6 +9,7 @@ import 'package:clixx/ui/views/authentication/setup_profile_view.dart';
 import 'package:clixx/ui/views/authentication/forgot_password_view.dart';
 import 'package:clixx/ui/views/authentication/reset_password_view.dart';
 import 'package:clixx/ui/views/authentication/password_reset_success_view.dart';
+import 'package:clixx/ui/views/home/home_view.dart';
 
 class AppRoutes {
   // Base Routes
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String forgotPasswordView = '/forgotPasswordView';
   static const String resetPasswordView = '/resetPasswordView';
   static const String passwordResetSuccessView = '/passwordResetSuccessView';
+  static const String homeView = '/homeView';
 
   static const String initialRoute = splashScreenView;
 
@@ -36,5 +38,6 @@ class AppRoutes {
     forgotPasswordView: (context) => const ForgotPasswordView(),
     resetPasswordView: (context) => const ResetPasswordView(),
     passwordResetSuccessView: (context) => const PasswordResetSuccessView(),
+    homeView: (context) => const HomeView(),
   };
 } 
