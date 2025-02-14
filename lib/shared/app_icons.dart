@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AppIconData {
   static const String _basePath = 'assets/svgs/';
   static const String user = '${_basePath}user.svg';
+  static const String user1 = '${_basePath}user1.svg';
   static const String calendar = '${_basePath}calendar.svg';
   static const String successmark = '${_basePath}successmark.svg';
   static const String add = '${_basePath}add.svg';
