@@ -97,12 +97,12 @@ class _OnboardingViewState extends State<OnboardingView> {
                       // Navigate to login
                     },
                     backgroundColor: AppColors.primitiveBlue50,
-                    textColor: Colors.black87,
+                    textColor: Colors.black,
                     elevation: 0,
                     textStyle: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -148,7 +148,7 @@ class OnboardingPage extends StatelessWidget {
               description,
               style: TextStyle(
                 fontSize: 16.sp,
-                color: Colors.black87,
+                color: Colors.black,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
