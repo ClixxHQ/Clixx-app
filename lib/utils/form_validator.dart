@@ -35,7 +35,7 @@ class FormValidators {
 
   static String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return 'Please enter your name';
     }
 
     if (value.length < 2) {
