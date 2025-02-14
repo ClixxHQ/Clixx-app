@@ -26,6 +26,8 @@ class _SignUpViewState extends State<SignUpView> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _referralController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   DateTime? _selectedDate;
   bool _termsAccepted = false;
   String? _phoneNumber;
@@ -39,6 +41,8 @@ class _SignUpViewState extends State<SignUpView> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _referralController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -66,6 +70,7 @@ class _SignUpViewState extends State<SignUpView> {
           'email': _emailController.text,
           'firstName': _firstNameController.text,
           'lastName': _lastNameController.text,
+          'password': _passwordController.text,
           'birthday': _selectedDate,
           'referralCode': _referralController.text,
         },
@@ -158,6 +163,41 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                   ),
                 ],
+              ),
+              AppSpacing.v24(),
+              AppInput(
+                labelText: 'Password',
+                controller: _passwordController,
+                hintText: 'Enter your password',
+                isRequired: true,
+                obscureText: true,
+                validator: FormValidators.validatePassword,
+                autoValidate: true,
+                customBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: AppColors.grey100),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                customBorderRadius: BorderRadius.circular(12),
+                customInputColor: AppColors.grey100,
+              ),
+              AppSpacing.v24(),
+              AppInput(
+                labelText: 'Confirm Password',
+                controller: _confirmPasswordController,
+                hintText: 'Re-enter your password',
+                isRequired: true,
+                obscureText: true,
+                validator: (value) => FormValidators.checkIfPasswordSame(
+                  _passwordController.text,
+                  value,
+                ),
+                autoValidate: true,
+                customBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: AppColors.grey100),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                customBorderRadius: BorderRadius.circular(12),
+                customInputColor: AppColors.grey100,
               ),
               AppSpacing.v24(),
               Text(
