@@ -7,36 +7,54 @@ class AppToast {
     required String message,
     bool isSuccess = true,
   }) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Container(
-          padding: EdgeInsets.symmetric(vertical: 8.h),
-          child: Row(
-            children: [
-              Icon(
-                isSuccess ? Icons.check_circle : Icons.error,
-                color: Colors.white,
-                size: 20.w,
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 56.h,
+        left: 0,
+        right: 0,
+        child: Material(
+          color: Colors.transparent,
+          child: Center(
+            child: Container(
+              width: 212.w,
+              height: 50.h,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 0),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(12.r),
               ),
-              SizedBox(width: 8.w),
-              Text(
-                message,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.white,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 16.w,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    message,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.white,
+                      height: 1,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-        backgroundColor: isSuccess ? Colors.green : Colors.red,
-        duration: const Duration(seconds: 3),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(16.w),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
         ),
       ),
     );
+
+    overlay.insert(overlayEntry);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      overlayEntry.remove();
+    });
   }
 } 
