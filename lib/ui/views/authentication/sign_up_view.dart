@@ -31,6 +31,7 @@ class _SignUpViewState extends State<SignUpView> {
   bool _termsAccepted = false;
   String? _phoneNumber;
   String? _countryCode;
+  bool _autoValidate = false;
 
   @override
   void dispose() {
@@ -51,6 +52,26 @@ class _SignUpViewState extends State<SignUpView> {
         });
       },
     );
+  }
+
+  void _handleSubmit() {
+    setState(() {
+      _autoValidate = true;
+    });
+    
+    if (_formKey.currentState?.validate() ?? false) {
+      NavigationService.pushNamed(
+        AppRoutes.otpVerification,
+        arguments: {
+          'phoneNumber': _phoneNumber,
+          'email': _emailController.text,
+          'firstName': _firstNameController.text,
+          'lastName': _lastNameController.text,
+          'birthday': _selectedDate,
+          'referralCode': _referralController.text,
+        },
+      );
+    }
   }
 
   @override
@@ -79,6 +100,7 @@ class _SignUpViewState extends State<SignUpView> {
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Form(
           key: _formKey,
+          autovalidateMode: _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -110,6 +132,7 @@ class _SignUpViewState extends State<SignUpView> {
                 isRequired: true,
                 keyboardType: TextInputType.emailAddress,
                 validator: FormValidators.validateEmail,
+                autoValidate: _autoValidate,
               ),
               AppSpacing.v24(),
               Row(
@@ -120,6 +143,8 @@ class _SignUpViewState extends State<SignUpView> {
                       controller: _firstNameController,
                       hintText: 'e.g Sam',
                       isRequired: true,
+                      validator: FormValidators.validateName,
+                      autoValidate: _autoValidate,
                     ),
                   ),
                   AppSpacing.h16(),
@@ -129,6 +154,8 @@ class _SignUpViewState extends State<SignUpView> {
                       controller: _lastNameController,
                       hintText: 'e.g Smith',
                       isRequired: true,
+                      validator: FormValidators.validateName,
+                      autoValidate: _autoValidate,
                     ),
                   ),
                 ],
@@ -247,21 +274,7 @@ class _SignUpViewState extends State<SignUpView> {
               AppSpacing.v24(),
               AppButton(
                 text: 'Continue',
-                onPressed: _termsAccepted ? () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    NavigationService.pushNamed(
-                      AppRoutes.otpVerification,
-                      arguments: {
-                        'phoneNumber': _phoneNumber,
-                        'email': _emailController.text,
-                        'firstName': _firstNameController.text,
-                        'lastName': _lastNameController.text,
-                        'birthday': _selectedDate,
-                        'referralCode': _referralController.text,
-                      },
-                    );
-                  }
-                } : null,
+                onPressed: _termsAccepted ? _handleSubmit : null,
                 backgroundColor: _termsAccepted ? AppColors.primary : AppColors.primitiveBlue50,
               ),
               AppSpacing.v32(),
