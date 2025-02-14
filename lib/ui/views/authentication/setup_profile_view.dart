@@ -6,6 +6,8 @@ import 'package:clixx/shared/app_icons.dart';
 import 'package:clixx/shared/widgets/app_button.dart';
 import 'package:clixx/shared/widgets/app_input.dart';
 import 'package:clixx/utils/form_validator.dart';
+import 'package:clixx/services/navigation_service.dart';
+import 'package:clixx/app/routes/app_routes.dart';
 
 class SetupProfileView extends StatefulWidget {
   const SetupProfileView({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _SetupProfileViewState extends State<SetupProfileView> {
     });
     
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Handle profile setup
+      NavigationService.pushReplacementNamed(AppRoutes.homeView);
     }
   }
 
