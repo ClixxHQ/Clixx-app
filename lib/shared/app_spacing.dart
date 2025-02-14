@@ -15,5 +15,12 @@ class AppSpacing {
   static SizedBox v16() => SizedBox(height: 16.h);
   static SizedBox v24() => SizedBox(height: 24.h);
   static SizedBox v32() => SizedBox(height: 32.h);
+  static SizedBox v40() => SizedBox(height: 40.h);
+  static SizedBox v48() => SizedBox(height: 48.h);
+  static SizedBox v56() => SizedBox(height: 56.h);
   static SizedBox v64() => SizedBox(height: 64.h);
+  static SizedBox v72() => SizedBox(height: 72.h);
+  static SizedBox v80() => SizedBox(height: 80.h);
+  static SizedBox v96() => SizedBox(height: 96.h);
+  static SizedBox v128() => SizedBox(height: 128.h);
 } 
