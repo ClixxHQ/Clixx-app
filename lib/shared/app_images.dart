@@ -3,11 +3,17 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AppImageData {
-  static const _base = 'assets/images';
-  // Add image paths here when needed
+  static const String _imagesPath = 'assets/images/';
+  static const String image1 = '${_imagesPath}image1.png';
+  static const String image2 = '${_imagesPath}image2.png';
+  static const String image3 = '${_imagesPath}image3.png';
+  static const String image4 = '${_imagesPath}image4.png';
+  static const String image5 = '${_imagesPath}image5.png';
+  static const String image6 = '${_imagesPath}image6.png';
 }
 
 class AppImages extends StatefulWidget {
@@ -18,41 +24,42 @@ class AppImages extends StatefulWidget {
   final double? width;
   final BoxFit? fit;
   final bool isLoaded;
-  const AppImages(
-      {this.path,
-      this.height,
-      this.width,
-      this.fit,
-      this.bytes,
-      this.file,
-      this.isLoaded = true,
-      super.key})
-      : assert(path != null || bytes != null || file != null);
+  
+  const AppImages({
+    super.key,
+    this.path,
+    this.height,
+    this.width,
+    this.fit,
+    this.bytes,
+    this.file,
+    this.isLoaded = true,
+  }) : assert(path != null || bytes != null || file != null);
 
   @override
   State<AppImages> createState() => _AppImagesState();
 }
 
-class _AppImagesState extends State<AppImages>
-    with AutomaticKeepAliveClientMixin {
+class _AppImagesState extends State<AppImages> with AutomaticKeepAliveClientMixin {
   bool get isNetwork => widget.path?.startsWith('http') ?? false;
   bool get isAsset => widget.path?.startsWith('assets') ?? false;
   bool get isFile => widget.file != null;
   bool get isMemory => widget.bytes != null;
   Uint8List? data;
+  bool loadingImages = false;
+
   @override
   void initState() {
     _getImageBytes();
     super.initState();
   }
 
-  bool loadingImages = false;
-
   void _getImageBytes() async {
     log('getting Image bytes');
     if (isNetwork && widget.isLoaded) {
-      loadingImages = true;
-      setState(() {});
+      setState(() {
+        loadingImages = true;
+      });
       try {
         final response = await NetworkAssetBundle(Uri.parse(widget.path!))
             .load(widget.path!);
@@ -70,6 +77,20 @@ class _AppImagesState extends State<AppImages>
         data = widget.bytes;
       });
     }
+  }
+
+  Widget _errorWidget() {
+    return Container(
+      height: widget.height,
+      width: widget.width,
+      color: Colors.grey.withOpacity(0.4),
+      child: const Center(
+        child: Icon(
+          Icons.image,
+          color: Colors.red,
+        ),
+      ),
+    );
   }
 
   @override
@@ -142,20 +163,6 @@ class _AppImagesState extends State<AppImages>
       );
     }
     return _errorWidget();
-  }
-
-  Widget _errorWidget() {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      color: Colors.grey.withOpacity(0.4),
-      child: const Center(
-        child: Icon(
-          Icons.image,
-          color: Colors.red,
-        ),
-      ),
-    );
   }
 
   @override
