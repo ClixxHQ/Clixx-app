@@ -125,7 +125,7 @@ class _AppInputState extends State<AppInput> {
                 widget.labelText!,
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: Colors.black87,
+                  color: Colors.black,
                 ),
               ),
               if (widget.isRequired) ...[
@@ -187,7 +187,7 @@ class _AppInputState extends State<AppInput> {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              color: Colors.black87,
+              color: Colors.black,
             ),
             decoration: InputDecoration(
               isDense: true,
