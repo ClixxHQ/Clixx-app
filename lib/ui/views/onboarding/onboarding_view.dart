@@ -83,7 +83,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 children: [
                   AppButton(
                     text: 'Sign Up',
-                    onPressed: () => NavigationService.pushNamed(AppRoutes.signUp),
+                    onPressed: () => NavigationService.pushNamed(AppRoutes.signUpView),
                     textStyle: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
