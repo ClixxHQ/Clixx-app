@@ -82,7 +82,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               child: Text(
                 year.toString(),
                 style: TextStyle(
-                  color: isSelected ? AppColors.primary : Colors.black87,
+                  color: isSelected ? AppColors.primary : Colors.black,
                   fontSize: 16.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
@@ -116,7 +116,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               child: Text(
                 months[index],
                 style: TextStyle(
-                  color: isSelected ? AppColors.primary : Colors.black87,
+                  color: isSelected ? AppColors.primary : Colors.black,
                   fontSize: 16.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
@@ -146,7 +146,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
             day,
             style: TextStyle(
               fontSize: 14.sp,
-              color: Colors.black87,
+              color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -203,7 +203,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                 '$i',
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: isSelected ? Colors.white : Colors.black87,
+                  color: isSelected ? Colors.white : Colors.black,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
