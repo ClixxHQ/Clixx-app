@@ -15,7 +15,7 @@ class AppRoutes {
   static const String verificationSuccessView = '/verificationSuccessView';
   static const String setupProfileView = '/setupProfileView';
 
-  static const String initialRoute = setupProfileView;
+  static const String initialRoute = splashScreenView;
 
   static Map<String, WidgetBuilder> routes = {
     splashScreenView: (context) => const SplashScreenView(),
