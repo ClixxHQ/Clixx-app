@@ -4,6 +4,7 @@ import 'package:clixx/shared/app_colors.dart';
 import 'package:clixx/shared/app_spacing.dart';
 import 'package:clixx/shared/app_icons.dart';
 import 'package:clixx/shared/widgets/app_button.dart';
+import 'package:clixx/app/routes/app_routes.dart';
 
 class VerificationSuccessView extends StatelessWidget {
   const VerificationSuccessView({Key? key}) : super(key: key);
@@ -42,9 +43,9 @@ class VerificationSuccessView extends StatelessWidget {
               AppSpacing.v32(),
               AppButton(
                 text: 'Setup your profile',
-                onPressed: () {
-                  // TODO: Navigate to profile setup
-                },
+                onPressed: () => Navigator.of(context).pushReplacementNamed(
+                  AppRoutes.setupProfileView,
+                ),
               ),
               AppSpacing.v16(),
               TextButton(
