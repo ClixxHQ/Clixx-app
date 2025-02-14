@@ -9,6 +9,8 @@ class AppIconData {
   static const String calendar = '${_basePath}calendar.svg';
   static const String successmark = '${_basePath}successmark.svg';
   static const String add = '${_basePath}add.svg';
+  static const String google = '${_basePath}google.svg';
+  static const String apple = '${_basePath}apple.svg';
 }
 
 class AppIcons extends StatelessWidget {
