@@ -51,4 +51,27 @@ class FormValidators {
     }
     return null;
   }
+
+  static String? validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return "Password is required";
+    }
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~%]).{8,}$';
+    RegExp regex = RegExp(pattern);
+
+    if (!regex.hasMatch(password)) {
+      return '''Password must be at least 8 characters,\ninclude an uppercase letter, number and symbol.''';
+    }
+
+    return null;
+  }
+
+  static String? checkIfPasswordSame(String? password, String? val,
+      [String? title]) {
+    if (password != val) {
+      return '${title ?? "Passwords"} do not match';
+    }
+    return null;
+  }
 } 
