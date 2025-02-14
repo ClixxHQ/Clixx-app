@@ -93,9 +93,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   AppSpacing.v12(),
                   AppButton(
                     text: 'Login',
-                    onPressed: () {
-                      // Navigate to login
-                    },
+                    onPressed: () => NavigationService.pushNamed(AppRoutes.signInView),
                     backgroundColor: AppColors.primitiveBlue50,
                     textColor: Colors.black,
                     elevation: 0,
