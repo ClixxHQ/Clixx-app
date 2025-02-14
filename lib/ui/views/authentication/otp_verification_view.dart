@@ -9,6 +9,7 @@ import 'package:clixx/shared/widgets/app_toast.dart';
 import 'package:clixx/shared/widgets/app_back_button.dart';
 import 'package:clixx/shared/widgets/app_otp_input.dart';
 import 'package:clixx/app/routes/app_routes.dart';
+import 'package:clixx/services/navigation_service.dart';
 
 class OtpVerificationView extends StatefulWidget {
   const OtpVerificationView({Key? key}) : super(key: key);
@@ -18,12 +19,13 @@ class OtpVerificationView extends StatefulWidget {
 }
 
 class _OtpVerificationViewState extends State<OtpVerificationView> {
-  late String phoneNumber;
-  late String email;
-  late String firstName;
-  late String lastName;
+  String? phoneNumber;
+  String? email;
+  String? firstName;
+  String? lastName;
   DateTime? birthday;
   String? referralCode;
+  bool isPasswordReset = false;
 
   final List<TextEditingController> _controllers = List.generate(
     6,
@@ -44,15 +46,18 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   }
 
   void _getArguments() {
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    setState(() {
-      phoneNumber = args['phoneNumber'];
-      email = args['email'];
-      firstName = args['firstName'];
-      lastName = args['lastName'];
-      birthday = args['birthday'];
-      referralCode = args['referralCode'];
-    });
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      setState(() {
+        phoneNumber = args['phoneNumber'];
+        email = args['email'];
+        firstName = args['firstName'];
+        lastName = args['lastName'];
+        birthday = args['birthday'];
+        referralCode = args['referralCode'];
+        isPasswordReset = args['isPasswordReset'] ?? false;
+      });
+    }
   }
 
   @override
@@ -120,7 +125,13 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
         setState(() {
           _isVerifying = false;
         });
-        Navigator.pushReplacementNamed(context, AppRoutes.verificationSuccessView);
+        if (isPasswordReset) {
+          NavigationService.pushReplacementNamed(
+            AppRoutes.resetPasswordView,
+          );
+        } else {
+          NavigationService.pushReplacementNamed(AppRoutes.verificationSuccessView);
+        }
       });
     }
   }
@@ -137,7 +148,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
         leading: const AppBackButton(isBorder: false),
         centerTitle: true,
         title: Text(
-          'Verify your number',
+          isPasswordReset ? 'Verify your email' : 'Verify your number',
           style: TextStyle(
             color: Colors.black,
             fontSize: 28.sp,
@@ -151,7 +162,9 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
           children: [
             AppSpacing.v16(),
             Text(
-              "We've sent you a 6-digit code to +$phoneNumber",
+              isPasswordReset
+                  ? "We've sent you a 6-digit code to $email"
+                  : "We've sent you a 6-digit code to +$phoneNumber",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
