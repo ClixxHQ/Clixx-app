@@ -9,7 +9,6 @@ import 'package:clixx/shared/widgets/app_button.dart';
 import 'package:clixx/shared/widgets/app_input.dart';
 import 'package:clixx/shared/widgets/app_phone_input.dart';
 import 'package:clixx/shared/app_icons.dart';
-import 'package:clixx/services/navigation_service.dart';
 import 'package:clixx/app/routes/app_routes.dart';
 import 'package:clixx/shared/widgets/app_back_button.dart';
 
@@ -60,8 +59,8 @@ class _SignUpViewState extends State<SignUpView> {
     });
     
     if (_formKey.currentState?.validate() ?? false) {
-      NavigationService.pushNamed(
-        AppRoutes.otpVerification,
+      Navigator.of(context).pushNamed(
+        AppRoutes.otpVerificationView,
         arguments: {
           'phoneNumber': _phoneNumber,
           'email': _emailController.text,
@@ -112,7 +111,7 @@ class _SignUpViewState extends State<SignUpView> {
                   height: 1.5,
                 ),
               ),
-              AppSpacing.v24(),
+              AppSpacing.v32(),
               AppPhoneInput(
                 controller: _phoneController,
                 labelText: 'Phone number',
