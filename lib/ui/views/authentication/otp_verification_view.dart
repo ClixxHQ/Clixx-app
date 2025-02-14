@@ -144,29 +144,29 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
-                color: Colors.black87,
+                color: Colors.black,
               ),
             ),
-            AppSpacing.v64(),
+            AppSpacing.v96(),
             AppOtpInput(
               controllers: _controllers,
               focusNodes: _focusNodes,
               onChanged: _onChanged,
             ),
-            AppSpacing.v64(),
+            AppSpacing.v72(),
             AppButton(
               text: 'Verify',
               onPressed: isOtpComplete ? _verifyOtp : null,
               loading: _isVerifying,
               backgroundColor: isOtpComplete ? AppColors.primary : AppColors.primitiveBlue50,
-              textColor: Colors.black87,
+              textColor: Colors.white,
             ),
-            AppSpacing.v16(),
+            AppSpacing.v24(),
             Text(
               "Didn't receive any code?",
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.black87,
+                color: Colors.black,
               ),
             ),
             Row(
@@ -178,7 +178,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                     'Resend code in ',
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Colors.black87,
+                      color: Colors.black,
                     ),
                   ),
                 ),
