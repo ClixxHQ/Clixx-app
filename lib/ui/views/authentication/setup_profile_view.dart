@@ -87,7 +87,7 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                       ),
                       child: Center(
                         child: AppIcons(
-                          icon: AppIconData.user,
+                          icon: AppIconData.user1,
                           size: 38.w,
                           color: Colors.black,
                         ),
