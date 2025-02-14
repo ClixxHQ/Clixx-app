@@ -17,6 +17,8 @@ class AppIconData {
   static const String activeHome = '${_basePath}active-home.svg';
   static const String activeUserMultiple = '${_basePath}active-user-multiple.svg';
   static const String activemarket = '${_basePath}activemarket.svg';
+  static const String home = '${_basePath}home.svg';
+  static const String menu = '${_basePath}menu.svg';
   static const String airplane = '${_basePath}airplane-01.svg';
   static const String arrowLeft = '${_basePath}arrow-left.svg';
   static const String backpack = '${_basePath}backpack.svg';
@@ -57,7 +59,7 @@ class AppIconData {
   static const String mic2 = '${_basePath}mic2.svg';
   static const String moreHorizontal = '${_basePath}more-horizontal.svg';
   static const String moreVertical = '${_basePath}more-vertical.svg';
-  static const String notepad = '${_basePath}Notepad.svg';
+  static const String orders = '${_basePath}orders.svg';
   static const String notification = '${_basePath}notification.svg';
   static const String notification1 = '${_basePath}notification1.svg';
   static const String officeChair = '${_basePath}office-chair.svg';
@@ -86,6 +88,7 @@ class AppIconData {
   static const String video = '${_basePath}video.svg';
   static const String video2 = '${_basePath}video2.svg';
   static const String volumeOff = '${_basePath}volume-off.svg';
+  static const String emojis = '${_basePath}emojis.svg';
 }
 
 class AppIcons extends StatelessWidget {
