@@ -72,6 +72,10 @@ class _AppInputState extends State<AppInput> {
   bool obscuring = false;
   final formFieldKey = GlobalKey<FormFieldState>();
   late FocusNode focusNode;
+  late TextEditingController controller;
+  String? errorText;
+  bool hasError = false;
+  int numberOfLines = 1;
 
   @override
   void initState() {
@@ -82,14 +86,27 @@ class _AppInputState extends State<AppInput> {
       controller.text = widget.initialValue!;
     }
     super.initState();
+
+    // Add listener to validate on text changes
+    controller.addListener(_validateOnChange);
   }
 
   @override
   void dispose() {
+    controller.removeListener(_validateOnChange);
     if (widget.focusNode == null) {
       focusNode.dispose();
     }
     super.dispose();
+  }
+
+  void _validateOnChange() {
+    if (widget.autoValidate && widget.validator != null) {
+      final error = widget.validator!(controller.text);
+      setState(() {
+        errorText = error;
+      });
+    }
   }
 
   void toggleObscuring() {
@@ -97,11 +114,6 @@ class _AppInputState extends State<AppInput> {
       obscuring = !obscuring;
     });
   }
-
-  late TextEditingController controller;
-  String? errorText;
-  bool hasError = false;
-  int numberOfLines = 1;
 
   int? get getMaxLines => widget.maxLines != null
       ? (numberOfLines > widget.maxLines! ? widget.maxLines : numberOfLines)
@@ -155,10 +167,7 @@ class _AppInputState extends State<AppInput> {
             onTap: widget.onTap,
             readOnly: widget.readOnly,
             obscureText: widget.obscureText != null ? obscuring : false,
-            onFieldSubmitted: (value) {
-              _calculateLinesOnSubmitted();
-              widget.onFieldSubmitted?.call(value);
-            },
+            onFieldSubmitted: widget.onFieldSubmitted,
             onTapOutside: (event) {
               FocusScope.of(context).unfocus();
             },
@@ -172,17 +181,8 @@ class _AppInputState extends State<AppInput> {
               return response;
             },
             onChanged: (val) {
-              if (widget.autoValidate) {
-                formFieldKey.currentState!.validate();
-              }
               widget.onChanged?.call(val);
-              _calculateLineOnChanged(val, context);
-              // Clear error when user types
-              if (errorText != null) {
-                setState(() {
-                  errorText = null;
-                });
-              }
+              _validateOnChange();
             },
             style: TextStyle(
               fontSize: 14.sp,
@@ -263,27 +263,5 @@ class _AppInputState extends State<AppInput> {
           )
       ],
     );
-  }
-
-  void _calculateLineOnChanged(String val, BuildContext context) {
-    if (widget.keyboardType == TextInputType.multiline) {
-      final count = val.split('\n').length;
-      int lines = (val.length /
-              (MediaQuery.of(context).size.width *
-                  (numberOfLines == 1 ? 0.079 : 0.088).w))
-          .round();
-      setState(() {
-        numberOfLines = (lines == 0 ? 1 : lines) + (count == 1 ? 0 : count - 1);
-      });
-    }
-  }
-
-  void _calculateLinesOnSubmitted() {
-    if (widget.keyboardType == TextInputType.multiline && numberOfLines == 1) {
-      numberOfLines += 1;
-      controller.text += '\n';
-      focusNode.requestFocus();
-      setState(() {});
-    }
   }
 } 
