@@ -4,6 +4,7 @@ import 'package:clixx/ui/views/onboarding/onboarding_view.dart';
 import 'package:clixx/ui/views/authentication/sign_up_view.dart';
 import 'package:clixx/ui/views/authentication/otp_verification_view.dart';
 import 'package:clixx/ui/views/authentication/verification_success_view.dart';
+import 'package:clixx/ui/views/authentication/setup_profile_view.dart';
 
 class AppRoutes {
   // Base Routes
@@ -12,8 +13,9 @@ class AppRoutes {
   static const String signUpView = '/signUpView';
   static const String otpVerificationView = '/otpVerificationView';
   static const String verificationSuccessView = '/verificationSuccessView';
+  static const String setupProfileView = '/setupProfileView';
 
-  static const String initialRoute = splashScreenView;
+  static const String initialRoute = setupProfileView;
 
   static Map<String, WidgetBuilder> routes = {
     splashScreenView: (context) => const SplashScreenView(),
@@ -21,5 +23,6 @@ class AppRoutes {
     signUpView: (context) => const SignUpView(),
     otpVerificationView: (context) => const OtpVerificationView(),
     verificationSuccessView: (context) => const VerificationSuccessView(),
+    setupProfileView: (context) => const SetupProfileView(),
   };
 } 
