@@ -214,8 +214,10 @@ class _AppInputState extends State<AppInput> {
                             obscuring
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined,
-                            color: AppColors.grey800,
+                            color: AppColors.grey500,
+                            size: 24.w,
                           ),
+                          splashRadius: 1,
                         )
                       : null),
               border: widget.customBorder ??
@@ -230,6 +232,11 @@ class _AppInputState extends State<AppInput> {
                     borderRadius: widget.customBorderRadius ??
                         BorderRadius.circular(12),
                   ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primitiveBlue400),
+                borderRadius: widget.customBorderRadius ??
+                    BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
