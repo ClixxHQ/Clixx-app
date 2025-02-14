@@ -92,7 +92,7 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                     'Country',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Colors.black87,
+                      color: Colors.black,
                     ),
                   ),
                   SizedBox(height: 8.h),
@@ -142,7 +142,7 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                         'Phone number',
                         style: TextStyle(
                           fontSize: 16.sp,
-                          color: Colors.black87,
+                          color: Colors.black,
                         ),
                       ),
                       if (widget.isRequired)
@@ -169,7 +169,7 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                           '+${selectedCountry?.phoneCode ?? '234'}',
                           style: TextStyle(
                             fontSize: 14.sp,
-                            color: Colors.black87,
+                            color: Colors.black,
                           ),
                         ),
                         SizedBox(width: 8.w),
@@ -179,7 +179,7 @@ class _AppPhoneInputState extends State<AppPhoneInput> {
                             keyboardType: TextInputType.phone,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: Colors.black87,
+                              color: Colors.black,
                             ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -335,7 +335,7 @@ class _CountryListViewState extends State<CountryListView> {
                     ),
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Colors.black87,
+                      color: Colors.black,
                     ),
                     onChanged: _filterCountries,
                   ),
@@ -357,7 +357,7 @@ class _CountryListViewState extends State<CountryListView> {
                   '+${country.phoneCode} ${country.name}',
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: Colors.black87,
+                    color: Colors.black,
                   ),
                 ),
                 onTap: () => widget.onSelect(country),
