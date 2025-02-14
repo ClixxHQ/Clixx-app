@@ -8,30 +8,23 @@ import 'package:clixx/shared/widgets/app_button.dart';
 import 'package:clixx/shared/widgets/app_toast.dart';
 import 'package:clixx/shared/widgets/app_back_button.dart';
 import 'package:clixx/shared/widgets/app_otp_input.dart';
+import 'package:clixx/app/routes/app_routes.dart';
 
 class OtpVerificationView extends StatefulWidget {
-  final String phoneNumber;
-  final String email;
-  final String firstName;
-  final String lastName;
-  final DateTime? birthday;
-  final String? referralCode;
-
-  const OtpVerificationView({
-    Key? key,
-    required this.phoneNumber,
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    this.birthday,
-    this.referralCode,
-  }) : super(key: key);
+  const OtpVerificationView({Key? key}) : super(key: key);
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
 }
 
 class _OtpVerificationViewState extends State<OtpVerificationView> {
+  late String phoneNumber;
+  late String email;
+  late String firstName;
+  late String lastName;
+  DateTime? birthday;
+  String? referralCode;
+
   final List<TextEditingController> _controllers = List.generate(
     6,
     (index) => TextEditingController(),
@@ -48,6 +41,24 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   void initState() {
     super.initState();
     startTimer();
+  }
+
+  void _getArguments() {
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      phoneNumber = args['phoneNumber'];
+      email = args['email'];
+      firstName = args['firstName'];
+      lastName = args['lastName'];
+      birthday = args['birthday'];
+      referralCode = args['referralCode'];
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getArguments();
   }
 
   @override
@@ -109,7 +120,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
         setState(() {
           _isVerifying = false;
         });
-        // Navigate to next screen
+        Navigator.pushReplacementNamed(context, AppRoutes.verificationSuccessView);
       });
     }
   }
@@ -140,7 +151,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
           children: [
             AppSpacing.v16(),
             Text(
-              "We've sent you a 6-digit code to +${widget.phoneNumber}",
+              "We've sent you a 6-digit code to +$phoneNumber",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
