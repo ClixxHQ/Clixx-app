@@ -20,7 +20,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   _navigateToOnboarding() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {
-      NavigationService.pushReplacementNamed(AppRoutes.onboarding);
+      NavigationService.pushReplacementNamed(AppRoutes.onboardingView);
     }
   }
 
