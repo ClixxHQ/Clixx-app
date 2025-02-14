@@ -130,7 +130,9 @@ class _SignInViewState extends State<SignInView> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // TODO: Handle forgot password
+                        NavigationService.pushReplacementNamed(
+                          AppRoutes.forgotPasswordView,
+                        );
                       },
                       child: Text(
                         'Forgot Password?',
