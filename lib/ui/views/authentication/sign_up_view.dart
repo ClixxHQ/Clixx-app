@@ -86,7 +86,7 @@ class _SignUpViewState extends State<SignUpView> {
                 'It will only take a minute to create you account.\nPlease enter your details to get started',
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: Colors.black87,
+                  color: Colors.black,
                   height: 1.5,
                 ),
               ),
@@ -138,7 +138,7 @@ class _SignUpViewState extends State<SignUpView> {
                 'Birthday',
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: Colors.black87,
+                  color: Colors.black,
                 ),
               ),
               AppSpacing.v8(),
@@ -160,8 +160,7 @@ class _SignUpViewState extends State<SignUpView> {
                             : 'Select birth month and day',
                         style: TextStyle(
                           color: _selectedDate != null
-                              ? Colors.black87
-                              : Colors.black54,
+                              ? Colors.black                              : Colors.black54,
                           fontSize: 14.sp,
                         ),
                       ),
@@ -218,7 +217,7 @@ class _SignUpViewState extends State<SignUpView> {
                       TextSpan(
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.black87,
+                          color: Colors.black,
                           height: 1.5,
                         ),
                         children: const [
